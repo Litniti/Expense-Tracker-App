@@ -73,7 +73,7 @@ struct ExpensesView: View {
             } else {
                 ForEach(viewModel.filteredExpenses) { expense in
                     ExpenseRow(expense: expense, currencyCode: appSession.selectedCurrencyCode)
-                        .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+                        .listRowInsets(EdgeInsets(top: 6, leading: 6, bottom: 6, trailing: 6))
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .swipeActions {
@@ -128,6 +128,7 @@ struct ExpensesView: View {
         .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)
+        .padding(.horizontal, 16)
     }
 
     private func binding(for keyPath: ReferenceWritableKeyPath<ExpensesListViewModel, Date?>) -> Binding<Date> {

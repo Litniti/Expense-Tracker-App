@@ -8,7 +8,7 @@ struct CardStyleModifier: ViewModifier {
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.large)
                     .stroke(AppTheme.Colors.cardBorder, lineWidth: 1)
             )
-            .shadow(color: .black.opacity(0.05), radius: 18, x: 0, y: 10)
+            .shadow(color: AppTheme.Colors.cardShadow, radius: 18, x: 0, y: 10)
     }
 }
 

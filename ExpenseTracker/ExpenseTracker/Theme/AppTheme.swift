@@ -1,16 +1,62 @@
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 enum AppTheme {
     enum Colors {
+        private static func adaptive(light: Color, dark: Color) -> Color {
+            #if canImport(UIKit)
+            Color(uiColor: UIColor { traits in
+                traits.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light)
+            })
+            #else
+            light
+            #endif
+        }
+
+        private static func adaptiveRGB(
+            light: (CGFloat, CGFloat, CGFloat),
+            dark: (CGFloat, CGFloat, CGFloat),
+            lightOpacity: CGFloat = 1,
+            darkOpacity: CGFloat = 1
+        ) -> Color {
+            adaptive(
+                light: Color(red: light.0, green: light.1, blue: light.2).opacity(lightOpacity),
+                dark: Color(red: dark.0, green: dark.1, blue: dark.2).opacity(darkOpacity)
+            )
+        }
+
         static let primary = Color(red: 0.03, green: 0.52, blue: 0.55)
         static let primaryDark = Color(red: 0.01, green: 0.23, blue: 0.28)
         static let success = Color(red: 0.13, green: 0.64, blue: 0.39)
         static let danger = Color(red: 0.84, green: 0.24, blue: 0.25)
-        static let screenBackground = Color(red: 0.96, green: 0.98, blue: 0.99)
-        static let cardBackground = Color.white.opacity(0.9)
-        static let cardBorder = Color.black.opacity(0.08)
-        static let primaryText = Color(red: 0.08, green: 0.12, blue: 0.17)
-        static let secondaryText = Color(red: 0.39, green: 0.46, blue: 0.53)
+
+        static let screenBackground = adaptiveRGB(
+            light: (0.96, 0.98, 0.99),
+            dark: (0.07, 0.09, 0.11)
+        )
+        static let cardBackground = adaptiveRGB(
+            light: (1.0, 1.0, 1.0),
+            dark: (0.14, 0.16, 0.19),
+            lightOpacity: 0.9
+        )
+        static let cardBorder = adaptive(
+            light: Color.black.opacity(0.08),
+            dark: Color.white.opacity(0.10)
+        )
+        static let cardShadow = adaptive(
+            light: Color.black.opacity(0.05),
+            dark: Color.black.opacity(0.35)
+        )
+        static let primaryText = adaptiveRGB(
+            light: (0.08, 0.12, 0.17),
+            dark: (0.95, 0.96, 0.98)
+        )
+        static let secondaryText = adaptiveRGB(
+            light: (0.39, 0.46, 0.53),
+            dark: (0.62, 0.67, 0.73)
+        )
 
         static let categoryFood = Color(red: 0.99, green: 0.58, blue: 0.17)
         static let categoryTransport = Color(red: 0.18, green: 0.50, blue: 0.96)

@@ -10,13 +10,13 @@ final class AppSession: ObservableObject {
 
     init(container: AppContainer) {
         self.settingsService = container.settingsService
-        self.preferredColorScheme = container.settingsService.isDarkModeEnabled ? .dark : nil
+        self.preferredColorScheme = container.settingsService.isDarkModeEnabled ? .dark : .light
         self.selectedCurrencyCode = container.settingsService.selectedCurrencyCode
     }
 
     func updateDarkMode(isEnabled: Bool) {
         settingsService.isDarkModeEnabled = isEnabled
-        preferredColorScheme = isEnabled ? .dark : nil
+        preferredColorScheme = isEnabled ? .dark : .light
     }
 
     func updateCurrency(code: String) {

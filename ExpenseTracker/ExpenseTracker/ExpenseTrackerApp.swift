@@ -8,6 +8,7 @@ struct ExpenseTrackerApp: App {
 
     init() {
         let container = AppContainer.live()
+        try? SampleDataSeeder.seedIfNeeded(in: container.modelContainer)
         self.container = container
         _appSession = StateObject(wrappedValue: AppSession(container: container))
     }
