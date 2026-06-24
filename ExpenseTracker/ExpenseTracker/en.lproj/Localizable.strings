@@ -1,0 +1,100 @@
+/* Tabs */
+"tab.dashboard" = "Dashboard";
+"tab.expenses" = "Expenses";
+"tab.analytics" = "Analytics";
+"tab.settings" = "Settings";
+
+/* Dashboard */
+"dashboard.title" = "Dashboard";
+"dashboard.tagline.title" = "Spend smarter";
+"dashboard.tagline.subtitle" = "A calm overview of your money this month.";
+"dashboard.loading" = "Loading dashboard…";
+"dashboard.unavailable" = "Dashboard unavailable";
+"dashboard.summary.this_month" = "This Month";
+"dashboard.summary.total_spent" = "Total Spent";
+"dashboard.summary.budget_used" = "%d%% of budget used";
+"dashboard.summary.recent_expenses_count" = "%d recent expenses";
+"dashboard.recent_expenses" = "Recent Expenses";
+"dashboard.budget_progress" = "Budget Progress";
+"dashboard.budget_left" = "%@ left";
+"dashboard.empty.title" = "No expenses yet";
+"dashboard.empty.message" = "Add your first expense to unlock analytics, budget tracking, and monthly insights.";
+
+/* Expenses */
+"expenses.title" = "Expenses";
+"expenses.loading" = "Loading expenses…";
+"expenses.load_error" = "Couldn't load expenses";
+"expenses.search_prompt" = "Search expenses";
+"expenses.add_accessibility" = "Add expense";
+"expenses.no_match.title" = "No matching expenses";
+"expenses.no_match.message" = "Try adjusting your search, category, or date filters.";
+"expenses.delete" = "Delete";
+"expenses.edit" = "Edit";
+"expenses.filter.all" = "All";
+"expenses.filter.from" = "From";
+"expenses.filter.to" = "To";
+"expenses.filter.clear" = "Clear filters";
+
+/* Analytics */
+"analytics.title" = "Analytics";
+"analytics.loading" = "Loading analytics…";
+"analytics.unavailable" = "Analytics unavailable";
+"analytics.empty.title" = "No analytics yet";
+"analytics.empty.message" = "Add expenses to see monthly patterns, category splits, and spending trends.";
+"analytics.chart.monthly.title" = "Monthly Spending";
+"analytics.chart.monthly.subtitle" = "Your spending over the last six months";
+"analytics.chart.category.title" = "By Category";
+"analytics.chart.category.subtitle" = "Where your money goes most often";
+"analytics.chart.trend.title" = "Recent Trend";
+"analytics.chart.trend.subtitle" = "The latest spending points on your timeline";
+
+/* Chart accessibility */
+"chart.spent" = "Spent";
+"chart.remaining" = "Remaining";
+"chart.month" = "Month";
+"chart.amount" = "Amount";
+"chart.category" = "Category";
+"chart.day" = "Day";
+
+/* Settings */
+"settings.title" = "Settings";
+"settings.appearance" = "Appearance";
+"settings.dark_mode" = "Dark Mode";
+"settings.language" = "Language";
+"settings.currency" = "Currency";
+"settings.data" = "Data";
+"settings.reset_button" = "Reset all expense data";
+"settings.reset.title" = "Reset all data?";
+"settings.reset.confirm" = "Reset";
+"settings.reset.message" = "This removes every saved expense and cannot be undone.";
+
+/* Expense Form */
+"expense_form.details" = "Details";
+"expense_form.title" = "Title";
+"expense_form.amount" = "Amount";
+"expense_form.category" = "Category";
+"expense_form.date" = "Date";
+"expense_form.notes" = "Notes";
+"expense_form.notes_placeholder" = "Optional notes";
+"expense_form.title_accessibility" = "Expense title";
+"expense_form.amount_accessibility" = "Expense amount";
+"expense_form.cancel" = "Cancel";
+"add_expense" = "Add Expense";
+"edit_expense" = "Edit Expense";
+
+/* Validation & Errors */
+"error.empty_title" = "Add a title so you can recognize this expense later.";
+"error.zero_amount" = "Enter an amount greater than zero.";
+"error.save_failed" = "Something went wrong while saving your expenses. Please try again.";
+
+/* Categories */
+"category.food" = "Food";
+"category.transport" = "Transport";
+"category.shopping" = "Shopping";
+"category.entertainment" = "Entertainment";
+"category.health" = "Health";
+"category.bills" = "Bills";
+"category.other" = "Other";
+
+/* Expense display */
+"expense.has_notes" = "Has notes";

@@ -7,16 +7,16 @@ final class ExpenseFormViewModel: ObservableObject {
         case create
         case edit(Expense)
 
-        var title: String {
+        var titleKey: String {
             switch self {
-            case .create: "Add Expense"
-            case .edit: "Edit Expense"
+            case .create: "add_expense"
+            case .edit: "edit_expense"
             }
         }
     }
 
     @Published var draft: ExpenseDraft
-    @Published var errorMessage: String?
+    @Published private(set) var validationMessageKey: String?
     @Published var isSaving = false
 
     let mode: Mode
@@ -51,7 +51,7 @@ final class ExpenseFormViewModel: ObservableObject {
             }
             onSuccess()
         } catch {
-            errorMessage = error.localizedDescription
+            validationMessageKey = "error.save_failed"
         }
     }
 
@@ -59,14 +59,19 @@ final class ExpenseFormViewModel: ObservableObject {
     func validate() -> Bool {
         let trimmedTitle = draft.title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedTitle.isEmpty else {
-            errorMessage = "Add a title so you can recognize this expense later."
+            validationMessageKey = "error.empty_title"
             return false
         }
         guard draft.amount.doubleValue > 0 else {
-            errorMessage = "Enter an amount greater than zero."
+            validationMessageKey = "error.zero_amount"
             return false
         }
-        errorMessage = nil
+        validationMessageKey = nil
         return true
+    }
+
+    func localizedValidationMessage(languageCode: String) -> String? {
+        guard let validationMessageKey else { return nil }
+        return L10n.string(validationMessageKey, languageCode: languageCode)
     }
 }

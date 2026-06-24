@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ExpensesView: View {
     @EnvironmentObject private var appSession: AppSession
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @StateObject private var viewModel: ExpensesListViewModel
     let formFactory: () -> ExpenseFormViewModel
     let editFactory: (Expense) -> ExpenseFormViewModel
@@ -23,17 +24,21 @@ struct ExpensesView: View {
         Group {
             switch viewModel.state {
             case .idle, .loading:
-                ProgressView("Loading expenses…")
+                ProgressView("expenses.loading")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case let .error(message):
-                EmptyStateView(title: "Couldn’t load expenses", message: message, systemImage: "tray.full")
-                    .padding()
+                EmptyStateView(
+                    title: "expenses.load_error",
+                    message: LocalizedStringKey(message),
+                    systemImage: "tray.full"
+                )
+                .padding()
             case .loaded:
                 content
             }
         }
         .background(AppTheme.Colors.screenBackground.ignoresSafeArea())
-        .navigationTitle("Expenses")
+        .navigationTitle("expenses.title")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -42,10 +47,10 @@ struct ExpensesView: View {
                 } label: {
                     Image(systemName: "plus.circle.fill")
                 }
-                .accessibilityLabel("Add expense")
+                .accessibilityLabel(Text("expenses.add_accessibility"))
             }
         }
-        .searchable(text: $viewModel.searchText, prompt: "Search expenses")
+        .searchable(text: $viewModel.searchText, prompt: Text("expenses.search_prompt"))
         .sheet(isPresented: $isPresentingForm) {
             ExpenseFormView(viewModel: formFactory())
         }
@@ -64,8 +69,8 @@ struct ExpensesView: View {
 
             if viewModel.filteredExpenses.isEmpty {
                 EmptyStateView(
-                    title: "No matching expenses",
-                    message: "Try adjusting your search, category, or date filters.",
+                    title: "expenses.no_match.title",
+                    message: "expenses.no_match.message",
                     systemImage: "magnifyingglass"
                 )
                 .listRowSeparator(.hidden)
@@ -80,13 +85,13 @@ struct ExpensesView: View {
                             Button(role: .destructive) {
                                 viewModel.delete(expense)
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label("expenses.delete", systemImage: "trash")
                             }
 
                             Button {
                                 selectedExpense = expense
                             } label: {
-                                Label("Edit", systemImage: "pencil")
+                                Label("expenses.edit", systemImage: "pencil")
                             }
                             .tint(AppTheme.Colors.primary)
                         }
@@ -101,11 +106,14 @@ struct ExpensesView: View {
         VStack(alignment: .leading, spacing: 12) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    FilterChip(title: "All", isSelected: viewModel.selectedCategory == nil) {
+                    FilterChip(title: localizationManager.localized("expenses.filter.all"), isSelected: viewModel.selectedCategory == nil) {
                         viewModel.selectedCategory = nil
                     }
                     ForEach(ExpenseCategory.allCases) { category in
-                        FilterChip(title: category.rawValue, isSelected: viewModel.selectedCategory == category) {
+                        FilterChip(
+                            title: localizationManager.localizedCategory(category),
+                            isSelected: viewModel.selectedCategory == category
+                        ) {
                             viewModel.selectedCategory = category
                         }
                     }
@@ -113,13 +121,13 @@ struct ExpensesView: View {
             }
 
             HStack(spacing: 12) {
-                DatePicker("From", selection: binding(for: \.startDate), displayedComponents: .date)
-                DatePicker("To", selection: binding(for: \.endDate), displayedComponents: .date)
+                DatePicker("expenses.filter.from", selection: binding(for: \.startDate), displayedComponents: .date)
+                DatePicker("expenses.filter.to", selection: binding(for: \.endDate), displayedComponents: .date)
             }
             .font(AppTheme.Typography.caption)
 
             if viewModel.selectedCategory != nil || viewModel.startDate != nil || viewModel.endDate != nil {
-                Button("Clear filters") {
+                Button("expenses.filter.clear") {
                     viewModel.clearFilters()
                 }
                 .font(AppTheme.Typography.caption.weight(.semibold))

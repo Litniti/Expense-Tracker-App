@@ -14,7 +14,7 @@ struct RootTabView: View {
                 )
             }
             .tabItem {
-                Label("Dashboard", systemImage: "house.fill")
+                Label("tab.dashboard", systemImage: "house.fill")
             }
 
             NavigationStack {
@@ -37,14 +37,14 @@ struct RootTabView: View {
                 )
             }
             .tabItem {
-                Label("Expenses", systemImage: "list.bullet.rectangle.fill")
+                Label("tab.expenses", systemImage: "list.bullet.rectangle.fill")
             }
 
             NavigationStack {
                 AnalyticsView(viewModel: AnalyticsViewModel(expenseService: container.expenseService))
             }
             .tabItem {
-                Label("Analytics", systemImage: "chart.xyaxis.line")
+                Label("tab.analytics", systemImage: "chart.xyaxis.line")
             }
 
             NavigationStack {
@@ -56,7 +56,7 @@ struct RootTabView: View {
                 )
             }
             .tabItem {
-                Label("Settings", systemImage: "gearshape.fill")
+                Label("tab.settings", systemImage: "gearshape.fill")
             }
         }
         .tint(AppTheme.Colors.primary)

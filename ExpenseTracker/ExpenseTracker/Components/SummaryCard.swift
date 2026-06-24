@@ -8,7 +8,7 @@ struct SummaryCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(title.uppercased())
+            Text(title)
                 .font(AppTheme.Typography.caption.weight(.semibold))
                 .foregroundStyle(AppTheme.Colors.secondaryText)
 

@@ -2,7 +2,7 @@ import Charts
 import SwiftUI
 
 struct AnalyticsView: View {
-    @EnvironmentObject private var appSession: AppSession
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @StateObject private var viewModel: AnalyticsViewModel
 
     init(viewModel: AnalyticsViewModel) {
@@ -14,50 +14,74 @@ struct AnalyticsView: View {
             VStack(spacing: AppTheme.Spacing.large) {
                 switch viewModel.state {
                 case .idle, .loading:
-                    ProgressView("Loading analytics…")
+                    ProgressView("analytics.loading")
                         .frame(maxWidth: .infinity, minHeight: 300)
                 case let .error(message):
-                    EmptyStateView(title: "Analytics unavailable", message: message, systemImage: "chart.bar.xaxis")
+                    EmptyStateView(
+                        title: "analytics.unavailable",
+                        message: LocalizedStringKey(message),
+                        systemImage: "chart.bar.xaxis"
+                    )
                 case .loaded:
                     if viewModel.monthlySpending.isEmpty {
                         EmptyStateView(
-                            title: "No analytics yet",
-                            message: "Add expenses to see monthly patterns, category splits, and spending trends.",
+                            title: "analytics.empty.title",
+                            message: "analytics.empty.message",
                             systemImage: "chart.pie"
                         )
                     } else {
-                        monthlyChart
-                        categoryChart
-                        trendChart
+                        chartsContent
                     }
                 }
             }
             .padding()
         }
         .background(AppTheme.Colors.screenBackground.ignoresSafeArea())
-        .navigationTitle("Analytics")
-        .task { viewModel.load() }
+        .navigationTitle("analytics.title")
+        .task { viewModel.load(languageCode: localizationManager.languageCode) }
+        .onChange(of: localizationManager.languageCode) { _, newCode in
+            viewModel.clearCharts()
+            Task { @MainActor in
+                await Task.yield()
+                viewModel.load(languageCode: newCode)
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
-            viewModel.load()
+            viewModel.load(languageCode: localizationManager.languageCode)
         }
     }
 
+    private var chartsContent: some View {
+        VStack(spacing: AppTheme.Spacing.large) {
+            monthlyChart
+            categoryChart
+            trendChart
+        }
+        .id(localizationManager.languageCode)
+    }
+
     private var monthlyChart: some View {
-        ChartCard(title: "Monthly Spending", subtitle: "Your spending over the last six months") {
+        ChartCard(title: "analytics.chart.monthly.title", subtitle: "analytics.chart.monthly.subtitle") {
             Chart(viewModel.monthlySpending) { point in
-                BarMark(x: .value("Month", point.label), y: .value("Amount", point.value))
-                    .foregroundStyle(AppTheme.Colors.primaryGradient)
-                    .cornerRadius(8)
+                BarMark(
+                    x: .value(ChartDimension.month, point.label),
+                    y: .value(ChartDimension.amount, point.value)
+                )
+                .foregroundStyle(AppTheme.Colors.primaryGradient)
+                .cornerRadius(8)
             }
             .frame(height: 220)
         }
     }
 
     private var categoryChart: some View {
-        ChartCard(title: "By Category", subtitle: "Where your money goes most often") {
+        ChartCard(title: "analytics.chart.category.title", subtitle: "analytics.chart.category.subtitle") {
             Chart(viewModel.categorySpending) { point in
-                SectorMark(angle: .value("Amount", point.value), innerRadius: .ratio(0.6))
-                    .foregroundStyle(by: .value("Category", point.label))
+                SectorMark(
+                    angle: .value(ChartDimension.amount, point.value),
+                    innerRadius: .ratio(0.6)
+                )
+                .foregroundStyle(by: .value(ChartDimension.category, point.seriesKey ?? point.label))
             }
             .chartForegroundStyleScale(
                 domain: ExpenseCategory.allCases.map(\.rawValue),
@@ -68,13 +92,19 @@ struct AnalyticsView: View {
     }
 
     private var trendChart: some View {
-        ChartCard(title: "Recent Trend", subtitle: "The latest spending points on your timeline") {
+        ChartCard(title: "analytics.chart.trend.title", subtitle: "analytics.chart.trend.subtitle") {
             Chart(viewModel.trendSpending) { point in
-                LineMark(x: .value("Day", point.label), y: .value("Amount", point.value))
-                    .foregroundStyle(AppTheme.Colors.success)
-                    .lineStyle(.init(lineWidth: 3, lineCap: .round))
-                AreaMark(x: .value("Day", point.label), y: .value("Amount", point.value))
-                    .foregroundStyle(AppTheme.Colors.success.opacity(0.18))
+                LineMark(
+                    x: .value(ChartDimension.day, point.label),
+                    y: .value(ChartDimension.amount, point.value)
+                )
+                .foregroundStyle(AppTheme.Colors.success)
+                .lineStyle(.init(lineWidth: 3, lineCap: .round))
+                AreaMark(
+                    x: .value(ChartDimension.day, point.label),
+                    y: .value(ChartDimension.amount, point.value)
+                )
+                .foregroundStyle(AppTheme.Colors.success.opacity(0.18))
             }
             .frame(height: 220)
         }
@@ -82,11 +112,11 @@ struct AnalyticsView: View {
 }
 
 private struct ChartCard<Content: View>: View {
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     let content: Content
 
-    init(title: String, subtitle: String, @ViewBuilder content: () -> Content) {
+    init(title: LocalizedStringKey, subtitle: LocalizedStringKey, @ViewBuilder content: () -> Content) {
         self.title = title
         self.subtitle = subtitle
         self.content = content()

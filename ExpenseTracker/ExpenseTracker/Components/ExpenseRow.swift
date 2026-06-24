@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct ExpenseRow: View {
+    @Environment(\.locale) private var locale
+    @EnvironmentObject private var localizationManager: LocalizationManager
+
     let expense: Expense
     let currencyCode: String
 
@@ -18,14 +21,14 @@ struct ExpenseRow: View {
                 Text(expense.title)
                     .font(AppTheme.Typography.body.weight(.semibold))
                     .foregroundStyle(AppTheme.Colors.primaryText)
-                Text("\(expense.category.rawValue) • \(expense.date.detailDateString)")
+                Text("\(localizationManager.localizedCategory(expense.category)) • \(expense.date.detailDateString(locale: locale))")
                     .font(AppTheme.Typography.caption)
                     .foregroundStyle(AppTheme.Colors.secondaryText)
             }
 
             Spacer()
 
-            Text(expense.amount.formattedCurrency(code: currencyCode))
+            Text(expense.amount.formattedCurrency(code: currencyCode, locale: locale))
                 .font(AppTheme.Typography.body.weight(.bold))
                 .foregroundStyle(AppTheme.Colors.primaryText)
         }

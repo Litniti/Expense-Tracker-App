@@ -5,6 +5,7 @@ import SwiftData
 struct ExpenseTrackerApp: App {
     private let container: AppContainer
     @StateObject private var appSession: AppSession
+    @StateObject private var localizationManager = LocalizationManager()
 
     init() {
         let container = AppContainer.live()
@@ -21,6 +22,8 @@ struct ExpenseTrackerApp: App {
         WindowGroup {
             RootTabView(container: container)
                 .environmentObject(appSession)
+                .environmentObject(localizationManager)
+                .environment(\.locale, localizationManager.locale)
                 .preferredColorScheme(appSession.preferredColorScheme)
         }
         .modelContainer(sharedModelContainer)

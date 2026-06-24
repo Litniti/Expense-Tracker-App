@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ExpenseFormView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @StateObject private var viewModel: ExpenseFormViewModel
 
     init(viewModel: ExpenseFormViewModel) {
@@ -11,30 +12,34 @@ struct ExpenseFormView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Details") {
-                    TextField("Title", text: $viewModel.draft.title)
-                        .accessibilityLabel("Expense title")
+                Section("expense_form.details") {
+                    TextField("expense_form.title", text: $viewModel.draft.title)
+                        .accessibilityLabel(Text("expense_form.title_accessibility"))
 
-                    TextField("Amount", text: $viewModel.draft.amount)
+                    TextField("expense_form.amount", text: $viewModel.draft.amount)
                         .keyboardType(.decimalPad)
-                        .accessibilityLabel("Expense amount")
+                        .accessibilityLabel(Text("expense_form.amount_accessibility"))
 
-                    Picker("Category", selection: $viewModel.draft.category) {
+                    Picker("expense_form.category", selection: $viewModel.draft.category) {
                         ForEach(ExpenseCategory.allCases) { category in
-                            Label(category.rawValue, systemImage: category.icon)
-                                .tag(category)
+                            Label {
+                                Text(localizationManager.localizedCategory(category))
+                            } icon: {
+                                Image(systemName: category.icon)
+                            }
+                            .tag(category)
                         }
                     }
 
-                    DatePicker("Date", selection: $viewModel.draft.date, displayedComponents: .date)
+                    DatePicker("expense_form.date", selection: $viewModel.draft.date, displayedComponents: .date)
                 }
 
-                Section("Notes") {
-                    TextField("Optional notes", text: $viewModel.draft.notes, axis: .vertical)
+                Section("expense_form.notes") {
+                    TextField("expense_form.notes_placeholder", text: $viewModel.draft.notes, axis: .vertical)
                         .lineLimit(4, reservesSpace: true)
                 }
 
-                if let errorMessage = viewModel.errorMessage {
+                if let errorMessage = viewModel.localizedValidationMessage(languageCode: localizationManager.languageCode) {
                     Section {
                         Text(errorMessage)
                             .font(AppTheme.Typography.caption)
@@ -43,7 +48,10 @@ struct ExpenseFormView: View {
                 }
 
                 Section {
-                    PrimaryButton(title: viewModel.mode.title, systemImage: "checkmark") {
+                    PrimaryButton(
+                        title: localizationManager.localized(viewModel.mode.titleKey),
+                        systemImage: "checkmark"
+                    ) {
                         viewModel.save {
                             dismiss()
                         }
@@ -52,12 +60,13 @@ struct ExpenseFormView: View {
                     .disabled(viewModel.isSaving)
                 }
             }
-            .navigationTitle(viewModel.mode.title)
+            .navigationTitle(localizationManager.localized(viewModel.mode.titleKey))
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                    Button("expense_form.cancel") { dismiss() }
                 }
             }
         }
+        .environment(\.locale, localizationManager.locale)
     }
 }

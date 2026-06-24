@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct ExpenseCard: View {
+    @Environment(\.locale) private var locale
+    @EnvironmentObject private var localizationManager: LocalizationManager
+
     let expense: Expense
     let currencyCode: String
 
@@ -9,7 +12,7 @@ struct ExpenseCard: View {
             HStack {
                 CategoryChip(category: expense.category)
                 Spacer()
-                Text(expense.amount.formattedCurrency(code: currencyCode))
+                Text(expense.amount.formattedCurrency(code: currencyCode, locale: locale))
                     .font(AppTheme.Typography.headline.weight(.bold))
                     .foregroundStyle(AppTheme.Colors.primaryText)
             }
@@ -19,9 +22,9 @@ struct ExpenseCard: View {
                 .foregroundStyle(AppTheme.Colors.primaryText)
 
             HStack {
-                Label(expense.date.detailDateString, systemImage: "calendar")
+                Label(expense.date.detailDateString(locale: locale), systemImage: "calendar")
                 if !expense.notes.isEmpty {
-                    Label("Has notes", systemImage: "note.text")
+                    Label("expense.has_notes", systemImage: "note.text")
                 }
             }
             .font(AppTheme.Typography.caption)
@@ -37,6 +40,8 @@ struct ExpenseCard: View {
         .padding()
         .cardStyle()
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(expense.title), \(expense.amount.formattedCurrency(code: currencyCode)), \(expense.category.rawValue)")
+        .accessibilityLabel(
+            "\(expense.title), \(expense.amount.formattedCurrency(code: currencyCode, locale: locale)), \(localizationManager.localizedCategory(expense.category))"
+        )
     }
 }

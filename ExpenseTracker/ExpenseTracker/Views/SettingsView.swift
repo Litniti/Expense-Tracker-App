@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject private var appSession: AppSession
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @StateObject private var viewModel: SettingsViewModel
     @State private var isShowingResetConfirmation = false
 
@@ -11,16 +12,24 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("Appearance") {
-                Toggle("Dark Mode", isOn: $viewModel.isDarkModeEnabled)
+            Section("settings.appearance") {
+                Toggle("settings.dark_mode", isOn: $viewModel.isDarkModeEnabled)
                     .onChange(of: viewModel.isDarkModeEnabled) { _, _ in
                         viewModel.updateDarkMode()
                         appSession.updateDarkMode(isEnabled: viewModel.isDarkModeEnabled)
                     }
             }
 
-            Section("Currency") {
-                Picker("Currency", selection: $viewModel.selectedCurrencyCode) {
+            Section("settings.language") {
+                Picker("settings.language", selection: localizationManager.languageSelection) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(language.displayName).tag(language.rawValue)
+                    }
+                }
+            }
+
+            Section("settings.currency") {
+                Picker("settings.currency", selection: $viewModel.selectedCurrencyCode) {
                     ForEach(viewModel.availableCurrencies, id: \.self) { code in
                         Text(code).tag(code)
                     }
@@ -31,8 +40,8 @@ struct SettingsView: View {
                 }
             }
 
-            Section("Data") {
-                Button("Reset all expense data", role: .destructive) {
+            Section("settings.data") {
+                Button("settings.reset_button", role: .destructive) {
                     isShowingResetConfirmation = true
                 }
             }
@@ -45,13 +54,14 @@ struct SettingsView: View {
                 }
             }
         }
-        .navigationTitle("Settings")
-        .confirmationDialog("Reset all data?", isPresented: $isShowingResetConfirmation) {
-            Button("Reset", role: .destructive) {
+        .navigationTitle("settings.title")
+        .alert("settings.reset.title", isPresented: $isShowingResetConfirmation) {
+            Button("settings.reset.confirm", role: .destructive) {
                 viewModel.resetData()
             }
+            Button("expense_form.cancel", role: .cancel) { }
         } message: {
-            Text("This removes every saved expense and cannot be undone.")
+            Text("settings.reset.message")
         }
     }
 }

@@ -1,0 +1,100 @@
+/* Tabs */
+"tab.dashboard" = "لوحة التحكم";
+"tab.expenses" = "المصروفات";
+"tab.analytics" = "التحليلات";
+"tab.settings" = "الإعدادات";
+
+/* Dashboard */
+"dashboard.title" = "لوحة التحكم";
+"dashboard.tagline.title" = "أنفق بذكاء";
+"dashboard.tagline.subtitle" = "نظرة هادئة على أموالك هذا الشهر.";
+"dashboard.loading" = "جارٍ تحميل لوحة التحكم…";
+"dashboard.unavailable" = "لوحة التحكم غير متاحة";
+"dashboard.summary.this_month" = "هذا الشهر";
+"dashboard.summary.total_spent" = "إجمالي الإنفاق";
+"dashboard.summary.budget_used" = "%d%% من الميزانية مستخدم";
+"dashboard.summary.recent_expenses_count" = "%d مصروفات حديثة";
+"dashboard.recent_expenses" = "المصروفات الأخيرة";
+"dashboard.budget_progress" = "تقدم الميزانية";
+"dashboard.budget_left" = "متبقي %@";
+"dashboard.empty.title" = "لا توجد مصروفات بعد";
+"dashboard.empty.message" = "أضف أول مصروف لفتح التحليلات وتتبع الميزانية والإحصاءات الشهرية.";
+
+/* Expenses */
+"expenses.title" = "المصروفات";
+"expenses.loading" = "جارٍ تحميل المصروفات…";
+"expenses.load_error" = "تعذّر تحميل المصروفات";
+"expenses.search_prompt" = "البحث في المصروفات";
+"expenses.add_accessibility" = "إضافة مصروف";
+"expenses.no_match.title" = "لا توجد مصروفات مطابقة";
+"expenses.no_match.message" = "جرّب تعديل البحث أو الفئة أو مرشحات التاريخ.";
+"expenses.delete" = "حذف";
+"expenses.edit" = "تعديل";
+"expenses.filter.all" = "الكل";
+"expenses.filter.from" = "من";
+"expenses.filter.to" = "إلى";
+"expenses.filter.clear" = "مسح المرشحات";
+
+/* Analytics */
+"analytics.title" = "التحليلات";
+"analytics.loading" = "جارٍ تحميل التحليلات…";
+"analytics.unavailable" = "التحليلات غير متاحة";
+"analytics.empty.title" = "لا توجد تحليلات بعد";
+"analytics.empty.message" = "أضف مصروفات لرؤية الأنماط الشهرية وتوزيع الفئات واتجاهات الإنفاق.";
+"analytics.chart.monthly.title" = "الإنفاق الشهري";
+"analytics.chart.monthly.subtitle" = "إنفاقك خلال الأشهر الستة الماضية";
+"analytics.chart.category.title" = "حسب الفئة";
+"analytics.chart.category.subtitle" = "أين يذهب معظم أموالك";
+"analytics.chart.trend.title" = "الاتجاه الأخير";
+"analytics.chart.trend.subtitle" = "أحدث نقاط الإنفاق على خط الزمن";
+
+/* Chart accessibility */
+"chart.spent" = "المنفق";
+"chart.remaining" = "المتبقي";
+"chart.month" = "الشهر";
+"chart.amount" = "المبلغ";
+"chart.category" = "الفئة";
+"chart.day" = "اليوم";
+
+/* Settings */
+"settings.title" = "الإعدادات";
+"settings.appearance" = "المظهر";
+"settings.dark_mode" = "الوضع الداكن";
+"settings.language" = "اللغة";
+"settings.currency" = "العملة";
+"settings.data" = "البيانات";
+"settings.reset_button" = "إعادة تعيين جميع المصروفات";
+"settings.reset.title" = "إعادة تعيين جميع البيانات؟";
+"settings.reset.confirm" = "إعادة التعيين";
+"settings.reset.message" = "سيؤدي هذا إلى حذف كل المصروفات المحفوظة ولا يمكن التراجع عنه.";
+
+/* Expense Form */
+"expense_form.details" = "التفاصيل";
+"expense_form.title" = "العنوان";
+"expense_form.amount" = "المبلغ";
+"expense_form.category" = "الفئة";
+"expense_form.date" = "التاريخ";
+"expense_form.notes" = "ملاحظات";
+"expense_form.notes_placeholder" = "ملاحظات اختيارية";
+"expense_form.title_accessibility" = "عنوان المصروف";
+"expense_form.amount_accessibility" = "مبلغ المصروف";
+"expense_form.cancel" = "إلغاء";
+"add_expense" = "إضافة مصروف";
+"edit_expense" = "تعديل المصروف";
+
+/* Validation & Errors */
+"error.empty_title" = "أضف عنوانًا لتتعرف على هذا المصروف لاحقًا.";
+"error.zero_amount" = "أدخل مبلغًا أكبر من صفر.";
+"error.save_failed" = "حدث خطأ أثناء حفظ المصروفات. يُرجى المحاولة مرة أخرى.";
+
+/* Categories */
+"category.food" = "طعام";
+"category.transport" = "مواصلات";
+"category.shopping" = "تسوق";
+"category.entertainment" = "ترفيه";
+"category.health" = "صحة";
+"category.bills" = "فواتير";
+"category.other" = "أخرى";
+
+/* Expense display */
+"expense.has_notes" = "يحتوي على ملاحظات";

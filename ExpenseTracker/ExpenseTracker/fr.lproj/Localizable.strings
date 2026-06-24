@@ -1,0 +1,100 @@
+/* Tabs */
+"tab.dashboard" = "Tableau de bord";
+"tab.expenses" = "Dépenses";
+"tab.analytics" = "Analyses";
+"tab.settings" = "Réglages";
+
+/* Dashboard */
+"dashboard.title" = "Tableau de bord";
+"dashboard.tagline.title" = "Dépensez plus intelligemment";
+"dashboard.tagline.subtitle" = "Un aperçu serein de votre budget ce mois-ci.";
+"dashboard.loading" = "Chargement du tableau de bord…";
+"dashboard.unavailable" = "Tableau de bord indisponible";
+"dashboard.summary.this_month" = "Ce mois-ci";
+"dashboard.summary.total_spent" = "Total dépensé";
+"dashboard.summary.budget_used" = "%d%% du budget utilisé";
+"dashboard.summary.recent_expenses_count" = "%d dépenses récentes";
+"dashboard.recent_expenses" = "Dépenses récentes";
+"dashboard.budget_progress" = "Progression du budget";
+"dashboard.budget_left" = "%@ restants";
+"dashboard.empty.title" = "Aucune dépense";
+"dashboard.empty.message" = "Ajoutez votre première dépense pour débloquer les analyses, le suivi du budget et les statistiques mensuelles.";
+
+/* Expenses */
+"expenses.title" = "Dépenses";
+"expenses.loading" = "Chargement des dépenses…";
+"expenses.load_error" = "Impossible de charger les dépenses";
+"expenses.search_prompt" = "Rechercher des dépenses";
+"expenses.add_accessibility" = "Ajouter une dépense";
+"expenses.no_match.title" = "Aucune dépense correspondante";
+"expenses.no_match.message" = "Essayez d'ajuster votre recherche, la catégorie ou les filtres de date.";
+"expenses.delete" = "Supprimer";
+"expenses.edit" = "Modifier";
+"expenses.filter.all" = "Tout";
+"expenses.filter.from" = "Du";
+"expenses.filter.to" = "Au";
+"expenses.filter.clear" = "Effacer les filtres";
+
+/* Analytics */
+"analytics.title" = "Analyses";
+"analytics.loading" = "Chargement des analyses…";
+"analytics.unavailable" = "Analyses indisponibles";
+"analytics.empty.title" = "Pas encore d'analyses";
+"analytics.empty.message" = "Ajoutez des dépenses pour voir les tendances mensuelles, les répartitions par catégorie et l\'évolution des dépenses.";
+"analytics.chart.monthly.title" = "Dépenses mensuelles";
+"analytics.chart.monthly.subtitle" = "Vos dépenses sur les six derniers mois";
+"analytics.chart.category.title" = "Par catégorie";
+"analytics.chart.category.subtitle" = "Où va le plus souvent votre argent";
+"analytics.chart.trend.title" = "Tendance récente";
+"analytics.chart.trend.subtitle" = "Les derniers points de dépenses sur votre chronologie";
+
+/* Chart accessibility */
+"chart.spent" = "Dépensé";
+"chart.remaining" = "Restant";
+"chart.month" = "Mois";
+"chart.amount" = "Montant";
+"chart.category" = "Catégorie";
+"chart.day" = "Jour";
+
+/* Settings */
+"settings.title" = "Réglages";
+"settings.appearance" = "Apparence";
+"settings.dark_mode" = "Mode sombre";
+"settings.language" = "Langue";
+"settings.currency" = "Devise";
+"settings.data" = "Données";
+"settings.reset_button" = "Réinitialiser toutes les dépenses";
+"settings.reset.title" = "Réinitialiser toutes les données ?";
+"settings.reset.confirm" = "Réinitialiser";
+"settings.reset.message" = "Cela supprime toutes les dépenses enregistrées et ne peut pas être annulé.";
+
+/* Expense Form */
+"expense_form.details" = "Détails";
+"expense_form.title" = "Titre";
+"expense_form.amount" = "Montant";
+"expense_form.category" = "Catégorie";
+"expense_form.date" = "Date";
+"expense_form.notes" = "Notes";
+"expense_form.notes_placeholder" = "Notes facultatives";
+"expense_form.title_accessibility" = "Titre de la dépense";
+"expense_form.amount_accessibility" = "Montant de la dépense";
+"expense_form.cancel" = "Annuler";
+"add_expense" = "Ajouter une dépense";
+"edit_expense" = "Modifier la dépense";
+
+/* Validation & Errors */
+"error.empty_title" = "Ajoutez un titre pour reconnaître cette dépense plus tard.";
+"error.zero_amount" = "Saisissez un montant supérieur à zéro.";
+"error.save_failed" = "Une erreur s\'est produite lors de l\'enregistrement. Veuillez réessayer.";
+
+/* Categories */
+"category.food" = "Alimentation";
+"category.transport" = "Transport";
+"category.shopping" = "Shopping";
+"category.entertainment" = "Divertissement";
+"category.health" = "Santé";
+"category.bills" = "Factures";
+"category.other" = "Autre";
+
+/* Expense display */
+"expense.has_notes" = "Avec notes";

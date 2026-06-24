@@ -29,13 +29,13 @@ final class ExpenseTrackerTests: XCTestCase {
         viewModel.draft.amount = "0"
 
         XCTAssertFalse(viewModel.validate())
-        XCTAssertEqual(viewModel.errorMessage, "Add a title so you can recognize this expense later.")
+        XCTAssertEqual(viewModel.validationMessageKey, "error.empty_title")
 
         viewModel.draft.title = "Coffee"
         viewModel.draft.amount = "0"
 
         XCTAssertFalse(viewModel.validate())
-        XCTAssertEqual(viewModel.errorMessage, "Enter an amount greater than zero.")
+        XCTAssertEqual(viewModel.validationMessageKey, "error.zero_amount")
     }
 
     func testExpenseFilteringAppliesSearchCategoryAndDateRange() {
@@ -55,5 +55,47 @@ final class ExpenseTrackerTests: XCTestCase {
 
         XCTAssertEqual(viewModel.filteredExpenses.count, 1)
         XCTAssertEqual(viewModel.filteredExpenses.first?.title, "Coffee Beans")
+    }
+}
+
+@MainActor
+final class LocalizationTests: XCTestCase {
+    func testEnglishLocalization() {
+        XCTAssertEqual(ExpenseCategory.food.localizedName(languageCode: "en"), "Food")
+        XCTAssertEqual(L10n.string("tab.dashboard", languageCode: "en"), "Dashboard")
+    }
+
+    func testFrenchLocalization() {
+        XCTAssertEqual(ExpenseCategory.food.localizedName(languageCode: "fr"), "Alimentation")
+        XCTAssertEqual(L10n.string("add_expense", languageCode: "fr"), "Ajouter une dépense")
+    }
+
+    func testArabicLocalization() {
+        XCTAssertEqual(ExpenseCategory.transport.localizedName(languageCode: "ar"), "مواصلات")
+        XCTAssertEqual(L10n.string("settings.language", languageCode: "ar"), "اللغة")
+    }
+
+    func testLocalizationManagerLanguage() {
+        let manager = LocalizationManager()
+        manager.setLanguage(.english)
+        XCTAssertFalse(manager.isRTL)
+
+        manager.setLanguage(.arabic)
+        XCTAssertTrue(manager.isRTL)
+    }
+
+    func testCurrencyFormattingUsesLocale() {
+        let amount = 10.0
+        let english = amount.formattedCurrency(code: "USD", locale: Locale(identifier: "en_US"))
+        XCTAssertTrue(english.contains("10"))
+
+        let french = amount.formattedCurrency(code: "EUR", locale: Locale(identifier: "fr_FR"))
+        XCTAssertTrue(french.contains("10"))
+    }
+
+    func testLegacyCategoryMigration() {
+        XCTAssertEqual(ExpenseCategory.fromStoredValue("Food"), .food)
+        XCTAssertEqual(ExpenseCategory.fromStoredValue("food"), .food)
+        XCTAssertEqual(ExpenseCategory.fromStoredValue("unknown"), .other)
     }
 }

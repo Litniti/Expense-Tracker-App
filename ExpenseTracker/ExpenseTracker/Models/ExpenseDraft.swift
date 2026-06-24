@@ -11,7 +11,7 @@ struct ExpenseDraft: Equatable {
 
     init(expense: Expense) {
         title = expense.title
-        amount = expense.amount.currencyEditingValue
+        amount = expense.amount.currencyEditingValue(locale: .current)
         category = expense.category
         date = expense.date
         notes = expense.notes

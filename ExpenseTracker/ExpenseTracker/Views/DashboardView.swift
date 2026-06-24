@@ -3,6 +3,8 @@ import SwiftUI
 
 struct DashboardView: View {
     @EnvironmentObject private var appSession: AppSession
+    @EnvironmentObject private var localizationManager: LocalizationManager
+    @Environment(\.locale) private var locale
     @StateObject private var viewModel: DashboardViewModel
 
     init(viewModel: DashboardViewModel) {
@@ -18,7 +20,7 @@ struct DashboardView: View {
             .padding()
         }
         .background(AppTheme.Colors.screenBackground.ignoresSafeArea())
-        .navigationTitle("Dashboard")
+        .navigationTitle("dashboard.title")
         .task { viewModel.load() }
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
             viewModel.load()
@@ -27,10 +29,10 @@ struct DashboardView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Spend smarter")
+            Text("dashboard.tagline.title")
                 .font(AppTheme.Typography.largeTitle)
                 .foregroundStyle(AppTheme.Colors.primaryText)
-            Text("A calm overview of your money this month.")
+            Text("dashboard.tagline.subtitle")
                 .font(AppTheme.Typography.body)
                 .foregroundStyle(AppTheme.Colors.secondaryText)
         }
@@ -40,23 +42,39 @@ struct DashboardView: View {
     private var stateView: some View {
         switch viewModel.state {
         case .idle, .loading:
-            ProgressView("Loading dashboard…")
+            ProgressView("dashboard.loading")
                 .frame(maxWidth: .infinity, minHeight: 220)
         case let .error(message):
-            EmptyStateView(title: "Dashboard unavailable", message: message, systemImage: "exclamationmark.triangle")
+            EmptyStateView(
+                title: "dashboard.unavailable",
+                message: LocalizedStringKey(message),
+                systemImage: "exclamationmark.triangle"
+            )
         case .loaded:
             VStack(spacing: AppTheme.Spacing.large) {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: AppTheme.Spacing.medium) {
                     SummaryCard(
-                        title: "This Month",
-                        value: viewModel.summary.monthSpending.formattedCurrency(code: appSession.selectedCurrencyCode),
-                        subtitle: "\(Int(viewModel.summary.budgetProgress * 100))% of budget used",
+                        title: localizationManager.localized("dashboard.summary.this_month"),
+                        value: viewModel.summary.monthSpending.formattedCurrency(
+                            code: appSession.selectedCurrencyCode,
+                            locale: locale
+                        ),
+                        subtitle: localizationManager.localized(
+                            "dashboard.summary.budget_used",
+                            Int(viewModel.summary.budgetProgress * 100)
+                        ),
                         accent: AppTheme.Colors.primary
                     )
                     SummaryCard(
-                        title: "Total Spent",
-                        value: viewModel.summary.totalSpending.formattedCurrency(code: appSession.selectedCurrencyCode),
-                        subtitle: "\(viewModel.summary.recentExpenses.count) recent expenses",
+                        title: localizationManager.localized("dashboard.summary.total_spent"),
+                        value: viewModel.summary.totalSpending.formattedCurrency(
+                            code: appSession.selectedCurrencyCode,
+                            locale: locale
+                        ),
+                        subtitle: localizationManager.localized(
+                            "dashboard.summary.recent_expenses_count",
+                            viewModel.summary.recentExpenses.count
+                        ),
                         accent: AppTheme.Colors.success
                     )
                 }
@@ -65,13 +83,13 @@ struct DashboardView: View {
 
                 if viewModel.summary.recentExpenses.isEmpty {
                     EmptyStateView(
-                        title: "No expenses yet",
-                        message: "Add your first expense to unlock analytics, budget tracking, and monthly insights.",
+                        title: "dashboard.empty.title",
+                        message: "dashboard.empty.message",
                         systemImage: "creditcard"
                     )
                 } else {
                     VStack(alignment: .leading, spacing: AppTheme.Spacing.medium) {
-                        Text("Recent Expenses")
+                        Text("dashboard.recent_expenses")
                             .font(AppTheme.Typography.headline)
                             .foregroundStyle(AppTheme.Colors.primaryText)
 
@@ -87,29 +105,41 @@ struct DashboardView: View {
     private var budgetCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("Budget Progress")
+                Text("dashboard.budget_progress")
                     .font(AppTheme.Typography.headline)
                 Spacer()
-                Text(viewModel.summary.remainingBudget.formattedCurrency(code: appSession.selectedCurrencyCode) + " left")
-                    .font(AppTheme.Typography.caption.weight(.semibold))
-                    .foregroundStyle(AppTheme.Colors.secondaryText)
+                Text(
+                    localizationManager.localized(
+                        "dashboard.budget_left",
+                        viewModel.summary.remainingBudget.formattedCurrency(
+                            code: appSession.selectedCurrencyCode,
+                            locale: locale
+                        )
+                    )
+                )
+                .font(AppTheme.Typography.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.Colors.secondaryText)
             }
 
             Chart {
                 SectorMark(
-                    angle: .value("Spent", viewModel.summary.budgetProgress),
+                    angle: .value(ChartDimension.spent, viewModel.summary.budgetProgress),
                     innerRadius: .ratio(0.65),
                     angularInset: 2
                 )
                 .foregroundStyle(AppTheme.Colors.primary)
 
                 SectorMark(
-                    angle: .value("Remaining", max(1 - viewModel.summary.budgetProgress, 0)),
+                    angle: .value(
+                        ChartDimension.remaining,
+                        max(1 - viewModel.summary.budgetProgress, 0)
+                    ),
                     innerRadius: .ratio(0.65),
                     angularInset: 2
                 )
                 .foregroundStyle(AppTheme.Colors.cardBorder)
             }
+            .id(localizationManager.languageCode)
             .frame(height: 180)
         }
         .padding()

@@ -30,7 +30,7 @@ final class Expense {
     }
 
     var category: ExpenseCategory {
-        get { ExpenseCategory(rawValue: categoryRawValue) ?? .other }
+        get { ExpenseCategory.fromStoredValue(categoryRawValue) }
         set { categoryRawValue = newValue.rawValue }
     }
 }

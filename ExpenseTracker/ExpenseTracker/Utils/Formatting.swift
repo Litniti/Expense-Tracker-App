@@ -1,13 +1,13 @@
 import Foundation
 
 extension Double {
-    func formattedCurrency(code: String) -> String {
-        formatted(.currency(code: code))
+    func formattedCurrency(code: String, locale: Locale = .current) -> String {
+        formatted(.currency(code: code).locale(locale))
     }
 
-    var currencyEditingValue: String {
+    func currencyEditingValue(locale: Locale = .current) -> String {
         let value = (self * 100).rounded() / 100
-        return value.formatted(.number.precision(.fractionLength(2)))
+        return value.formatted(.number.precision(.fractionLength(2)).locale(locale))
     }
 }
 
@@ -18,15 +18,18 @@ extension String {
 }
 
 extension Date {
-    var detailDateString: String {
-        formatted(date: .abbreviated, time: .omitted)
+    func detailDateString(locale: Locale = .current) -> String {
+        formatted(
+            Date.FormatStyle(date: .abbreviated, time: .omitted)
+                .locale(locale)
+        )
     }
 
-    var monthShort: String {
-        formatted(.dateTime.month(.abbreviated))
+    func monthShort(locale: Locale = .current) -> String {
+        formatted(.dateTime.month(.abbreviated).locale(locale))
     }
 
-    var dayMonthShort: String {
-        formatted(.dateTime.day().month(.abbreviated))
+    func dayMonthShort(locale: Locale = .current) -> String {
+        formatted(.dateTime.day().month(.abbreviated).locale(locale))
     }
 }
