@@ -75,13 +75,19 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(L10n.string("settings.language", languageCode: "ar"), "اللغة")
     }
 
-    func testLocalizationManagerLanguage() {
-        let manager = LocalizationManager()
+    func testLocalizationManagerLanguage() async {
+        let defaults = UserDefaults(suiteName: "LocalizationManagerTests")!
+        defaults.removePersistentDomain(forName: "LocalizationManagerTests")
+
+        let manager = LocalizationManager(userDefaults: defaults)
+
         manager.setLanguage(.english)
-        XCTAssertFalse(manager.isRTL)
+        let englishRTL = manager.isRTL
+        XCTAssertFalse(englishRTL)
 
         manager.setLanguage(.arabic)
-        XCTAssertTrue(manager.isRTL)
+        let arabicRTL = manager.isRTL
+        XCTAssertTrue(arabicRTL)
     }
 
     func testCurrencyFormattingUsesLocale() {

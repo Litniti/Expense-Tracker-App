@@ -5,7 +5,15 @@ import SwiftUI
 final class LocalizationManager: ObservableObject {
     static let storageKey = "app.selectedLanguage"
 
-    @AppStorage(storageKey) var languageCode: String = AppLanguage.english.rawValue
+    private let userDefaults: UserDefaults
+
+    @Published private(set) var languageCode: String
+
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+        self.languageCode = userDefaults.string(forKey: Self.storageKey)
+            ?? AppLanguage.english.rawValue
+    }
 
     var currentLanguage: AppLanguage {
         AppLanguage.from(code: languageCode)
@@ -23,17 +31,15 @@ final class LocalizationManager: ObservableObject {
         Binding(
             get: { self.languageCode },
             set: { newValue in
-                guard newValue != self.languageCode else { return }
-                self.languageCode = newValue
-                self.objectWillChange.send()
-            }
+                self.setLanguage(AppLanguage.from(code: newValue)) }
         )
     }
 
     func setLanguage(_ language: AppLanguage) {
         guard language.rawValue != languageCode else { return }
+
         languageCode = language.rawValue
-        objectWillChange.send()
+        userDefaults.set(language.rawValue, forKey: Self.storageKey)
     }
 
     func localized(_ key: String) -> String {
